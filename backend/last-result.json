@@ -1,0 +1,402 @@
+{
+  "executedAt": "2026-01-13T19:35:12.061Z",
+  "type": "manual",
+  "total": 79,
+  "data": [
+    {
+      "razonSocial": "CAXAMARCA GAS S.A.",
+      "placa": "M5O-734",
+      "estado": "ACTIVO"
+    },
+    {
+      "razonSocial": "CAXAMARCA GAS S.A.",
+      "placa": "BCL-744",
+      "estado": "ACTIVO"
+    },
+    {
+      "razonSocial": "CAXAMARCA GAS S.A.",
+      "placa": "AST-922",
+      "estado": "ACTIVO"
+    },
+    {
+      "razonSocial": "CAXAMARCA GAS S.A.",
+      "placa": "F6J-992",
+      "estado": "ACTIVO"
+    },
+    {
+      "razonSocial": "CESAR TRANSPORTES Y SERVICIOS GENERALES S.R.L.",
+      "placa": "AEO-851",
+      "estado": "ACTIVO"
+    },
+    {
+      "razonSocial": "CESAR TRANSPORTES Y SERVICIOS GENERALES S.R.L.",
+      "placa": "ANQ-724",
+      "estado": "ACTIVO"
+    },
+    {
+      "razonSocial": "CESAR TRANSPORTES Y SERVICIOS GENERALES S.R.L.",
+      "placa": "ANP-939",
+      "estado": "ACTIVO"
+    },
+    {
+      "razonSocial": "CESAR TRANSPORTES Y SERVICIOS GENERALES S.R.L.",
+      "placa": "ATI-731",
+      "estado": "INACTIVO"
+    },
+    {
+      "razonSocial": "CESAR TRANSPORTES Y SERVICIOS GENERALES S.R.L.",
+      "placa": "D6U-741",
+      "estado": "ACTIVO"
+    },
+    {
+      "razonSocial": "COMERCIALIZADORA ISSANORT E.I.R.L.",
+      "placa": "BLO-801",
+      "estado": "ACTIVO"
+    },
+    {
+      "razonSocial": "COSTA GAS TRUJILLO S.A.C.",
+      "placa": "A0X-941",
+      "estado": "ACTIVO"
+    },
+    {
+      "razonSocial": "COSTA GAS TRUJILLO S.A.C.",
+      "placa": "M6O-938",
+      "estado": "ACTIVO"
+    },
+    {
+      "razonSocial": "COSTA GAS TRUJILLO S.A.C.",
+      "placa": "P4J-766",
+      "estado": "ACTIVO"
+    },
+    {
+      "razonSocial": "COSTA GAS TRUJILLO S.A.C.",
+      "placa": "BCD-700",
+      "estado": "ACTIVO"
+    },
+    {
+      "razonSocial": "COSTA GAS TRUJILLO S.A.C.",
+      "placa": "T5D-827",
+      "estado": "ACTIVO"
+    },
+    {
+      "razonSocial": "DAYANNA INGENIEROS S.R.L.",
+      "placa": "TDR-995",
+      "estado": "ACTIVO"
+    },
+    {
+      "razonSocial": "DAYANNA INGENIEROS S.R.L.",
+      "placa": "TDX-988",
+      "estado": "INACTIVO"
+    },
+    {
+      "razonSocial": "DAYANNA INGENIEROS S.R.L.",
+      "placa": "TFV-979",
+      "estado": "ACTIVO"
+    },
+    {
+      "razonSocial": "DAYANNA INGENIEROS S.R.L.",
+      "placa": "TFV-974",
+      "estado": "ACTIVO"
+    },
+    {
+      "razonSocial": "DAYANNA INGENIEROS S.R.L.",
+      "placa": "TFV-997",
+      "estado": "INACTIVO"
+    },
+    {
+      "razonSocial": "DAYANNA INGENIEROS S.R.L.",
+      "placa": "TGA-981",
+      "estado": "INACTIVO"
+    },
+    {
+      "razonSocial": "DAYANNA INGENIEROS S.R.L.",
+      "placa": "THZ-997",
+      "estado": "ACTIVO"
+    },
+    {
+      "razonSocial": "DAYANNA INGENIEROS S.R.L.",
+      "placa": "TFE-991",
+      "estado": "ACTIVO"
+    },
+    {
+      "razonSocial": "DAYANNA INGENIEROS S.R.L.",
+      "placa": "TFA-972",
+      "estado": "ACTIVO"
+    },
+    {
+      "razonSocial": "DAYANNA INGENIEROS S.R.L.",
+      "placa": "TFV-985",
+      "estado": "ACTIVO"
+    },
+    {
+      "razonSocial": "DAYANNA INGENIEROS S.R.L.",
+      "placa": "TFV-975",
+      "estado": "ACTIVO"
+    },
+    {
+      "razonSocial": "DAYANNA INGENIEROS S.R.L.",
+      "placa": "BNS-979",
+      "estado": "INACTIVO"
+    },
+    {
+      "razonSocial": "DAYANNA INGENIEROS S.R.L.",
+      "placa": "BNS-990",
+      "estado": "ACTIVO"
+    },
+    {
+      "razonSocial": "DAYANNA INGENIEROS S.R.L.",
+      "placa": "TNC-990",
+      "estado": "ACTIVO"
+    },
+    {
+      "razonSocial": "EMPRESA MINERA EL PROGRESO SRL.",
+      "placa": "M4V-997",
+      "estado": "INACTIVO"
+    },
+    {
+      "razonSocial": "GLOBAL SOLUTIONS E-J S.A.C.",
+      "placa": "F6K-714",
+      "estado": "ACTIVO"
+    },
+    {
+      "razonSocial": "GRIFO CONTINENTAL S.A.C.",
+      "placa": "TDO-974",
+      "estado": "ACTIVO"
+    },
+    {
+      "razonSocial": "MARK DA S.A.",
+      "placa": "AHK-975",
+      "estado": "ACTIVO"
+    },
+    {
+      "razonSocial": "MARK DA S.A.",
+      "placa": "AHK-974",
+      "estado": "ACTIVO"
+    },
+    {
+      "razonSocial": "MARK DA S.A.",
+      "placa": "BBA-991",
+      "estado": "ACTIVO"
+    },
+    {
+      "razonSocial": "MARK DA S.A.",
+      "placa": "AZN-979",
+      "estado": "ACTIVO"
+    },
+    {
+      "razonSocial": "MARK DA S.A.",
+      "placa": "TDA-856",
+      "estado": "ACTIVO"
+    },
+    {
+      "razonSocial": "MARK DA S.A.",
+      "placa": "BHR-996",
+      "estado": "ACTIVO"
+    },
+    {
+      "razonSocial": "MARK DA S.A.",
+      "placa": "BHN-996",
+      "estado": "ACTIVO"
+    },
+    {
+      "razonSocial": "NUMAY S.A.",
+      "placa": "CCF-795",
+      "estado": "INACTIVO"
+    },
+    {
+      "razonSocial": "NUMAY S.A.",
+      "placa": "CRA-127",
+      "estado": "INACTIVO"
+    },
+    {
+      "razonSocial": "PROYECTOS DE INGENIERIA Y SERVICIOS S.C.R.L.",
+      "placa": "VBP-757",
+      "estado": "INACTIVO"
+    },
+    {
+      "razonSocial": "RIOS MORALES ROCIO CASILDA",
+      "placa": "PA-58867-BF",
+      "estado": "INACTIVO"
+    },
+    {
+      "razonSocial": "SERVICIOS GENERALES TRANSMARR S.A.C",
+      "placa": "BYC-811",
+      "estado": "INACTIVO"
+    },
+    {
+      "razonSocial": "SERVICIOS GENERALES TRANSMARR S.A.C",
+      "placa": "TED-847",
+      "estado": "INACTIVO"
+    },
+    {
+      "razonSocial": "SERVICIOS GENERALES TRANSMARR S.A.C",
+      "placa": "CCA-894",
+      "estado": "INACTIVO"
+    },
+    {
+      "razonSocial": "SERVICIOS GENERALES TRANSMARR S.A.C",
+      "placa": "CCC-744",
+      "estado": "INACTIVO"
+    },
+    {
+      "razonSocial": "SERVICIOS GENERALES TRANSMARR S.A.C.",
+      "placa": "ASC-941",
+      "estado": "INACTIVO"
+    },
+    {
+      "razonSocial": "TACSHANA GROUP S.R.L.",
+      "placa": "BUW-759",
+      "estado": "INACTIVO"
+    },
+    {
+      "razonSocial": "TEӆILO TAMARA PɒEZ",
+      "placa": "D0Z-795",
+      "estado": "ACTIVO"
+    },
+    {
+      "razonSocial": "TRACOM PERU S.A.C.",
+      "placa": "BDW-991",
+      "estado": "ACTIVO"
+    },
+    {
+      "razonSocial": "TRANSPORTES ACUARIO S.A.C",
+      "placa": "T9V-994",
+      "estado": "INACTIVO"
+    },
+    {
+      "razonSocial": "TRANSPORTES ACUARIO S.A.C.",
+      "placa": "T9W-983",
+      "estado": "INACTIVO"
+    },
+    {
+      "razonSocial": "TRANSPORTES ACUARIO S.A.C.",
+      "placa": "TFJ-978",
+      "estado": "ACTIVO"
+    },
+    {
+      "razonSocial": "TRANSPORTES ACUARIO S.A.C.",
+      "placa": "TFJ-992",
+      "estado": "ACTIVO"
+    },
+    {
+      "razonSocial": "TRANSPORTES ACUARIO S.A.C.",
+      "placa": "TFJ-989",
+      "estado": "ACTIVO"
+    },
+    {
+      "razonSocial": "TRANSPORTES ACUARIO S.A.C.",
+      "placa": "TFJ-982",
+      "estado": "ACTIVO"
+    },
+    {
+      "razonSocial": "TRANSPORTES ACUARIO S.A.C.",
+      "placa": "TFY-970",
+      "estado": "ACTIVO"
+    },
+    {
+      "razonSocial": "TRANSPORTES ACUARIO S.A.C.",
+      "placa": "TFJ-988",
+      "estado": "ACTIVO"
+    },
+    {
+      "razonSocial": "TRANSPORTES ACUARIO S.A.C.",
+      "placa": "A4H-834",
+      "estado": "INACTIVO"
+    },
+    {
+      "razonSocial": "TRANSPORTES ACUARIO S.A.C.",
+      "placa": "TGE-976",
+      "estado": "ACTIVO"
+    },
+    {
+      "razonSocial": "TRANSPORTES ACUARIO S.A.C.",
+      "placa": "TGE-975",
+      "estado": "ACTIVO"
+    },
+    {
+      "razonSocial": "TRANSPORTES ACUARIO S.A.C.",
+      "placa": "TGE-979",
+      "estado": "ACTIVO"
+    },
+    {
+      "razonSocial": "TRANSPORTES ACUARIO S.A.C.",
+      "placa": "TGE-977",
+      "estado": "ACTIVO"
+    },
+    {
+      "razonSocial": "TRANSPORTES ACUARIO S.A.C.",
+      "placa": "TGE-984",
+      "estado": "ACTIVO"
+    },
+    {
+      "razonSocial": "TRANSPORTES ACUARIO S.A.C.",
+      "placa": "TGE-981",
+      "estado": "ACTIVO"
+    },
+    {
+      "razonSocial": "TRANSPORTES ACUARIO S.A.C.",
+      "placa": "TJJ-991",
+      "estado": "ACTIVO"
+    },
+    {
+      "razonSocial": "TRANSPORTES ACUARIO S.A.C.",
+      "placa": "TJK-978",
+      "estado": "INACTIVO"
+    },
+    {
+      "razonSocial": "TRANSPORTES ACUARIO S.A.C.",
+      "placa": "TKI-982",
+      "estado": "ACTIVO"
+    },
+    {
+      "razonSocial": "TRANSPORTES ACUARIO S.A.C.",
+      "placa": "AZU-976",
+      "estado": "ACTIVO"
+    },
+    {
+      "razonSocial": "TRANSPORTES ACUARIO S.A.C.",
+      "placa": "BJX-996",
+      "estado": "INACTIVO"
+    },
+    {
+      "razonSocial": "TRANSPORTES ACUARIO S.A.C.",
+      "placa": "TNF-985",
+      "estado": "ACTIVO"
+    },
+    {
+      "razonSocial": "TRANSPORTES ACUARIO S.A.C.",
+      "placa": "TJV-979",
+      "estado": "INACTIVO"
+    },
+    {
+      "razonSocial": "TRANSPORTES ACUARIO S.A.C.",
+      "placa": "TNF-995",
+      "estado": "INACTIVO"
+    },
+    {
+      "razonSocial": "TRANSPORTES ACUARIO S.A.C.",
+      "placa": "TOH-973",
+      "estado": "ACTIVO"
+    },
+    {
+      "razonSocial": "TRANSPORTES ACUARIO S.A.C..",
+      "placa": "TFJ-986",
+      "estado": "ACTIVO"
+    },
+    {
+      "razonSocial": "TRANSPORTES TERRESTRES NACIONALES E.I.R.L.",
+      "placa": "C6A-970",
+      "estado": "ACTIVO"
+    },
+    {
+      "razonSocial": "TRANSPORTES TERRESTRES NACIONALES E.I.R.L.",
+      "placa": "B2U-979",
+      "estado": "ACTIVO"
+    },
+    {
+      "razonSocial": "TRANSPORTES TERRESTRES NACIONALES EIRL",
+      "placa": "BMN-980",
+      "estado": "ACTIVO"
+    }
+  ]
+}

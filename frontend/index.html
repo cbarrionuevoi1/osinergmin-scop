@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estado de unidades monitoreadas</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/styles.css">
+
+    <!-- API_BASE_URL inyectado por backend -->
+    <script>
+        window.API_BASE_URL = "_API_BASE_URL_";
+    </script>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- ICONO MODO OSCURO -->
+    <div class="theme-container">
+        <button id="themeToggle">🌙</button>
+    </div>
+
+    <!-- TITULO -->
+    <h1 class="title">
+        Estado de unidades
+    </h1>
+
+    <!-- INFO -->
+    <div class="info-box">
+        <div>
+            <strong>Última búsqueda:</strong>
+            <span id="lastExecution">--</span>
+        </div>
+    </div>
+
+    <!-- ACCIONES -->
+    <div class="actions-bar">
+        <div class="filters">
+            <input
+                type="text"
+                id="plateFilter"
+                placeholder="Buscar placa o razón social"
+            />
+
+            <select id="statusFilter">
+                <option value="ALL">Todos</option>
+                <option value="ACTIVO">Activo</option>
+                <option value="INACTIVO">Inactivo</option>
+            </select>
+        </div>
+
+        <button id="runManualBtn">Consultar</button>
+    </div>
+
+    <!-- RESULTADOS -->
+    <div class="results-panel">
+
+        <!-- TABLA (DESKTOP) -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Razón Social</th>
+                    <th>Placa</th>
+                    <th>Estado</th>
+                </tr>
+            </thead>
+            <tbody id="platesTable">
+                <tr>
+                    <td colspan="3" class="empty">
+                        Presione “Consultar”
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- CARDS (MOBILE) -->
+        <div id="cardsContainer" class="cards"></div>
+
+    </div>
+
+</div>
+
+<!-- JS -->
+<script src="js/app.js"></script>
+</body>
+</html>
