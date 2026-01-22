@@ -7,16 +7,34 @@ let API_BASE_URL = "";
 // ESTADO GLOBAL
 // =====================
 let dataOriginal = [];
+let lastExecutedAt = null;
+let lastDataSignature = null;
+
+// Selección
+let placasSeleccionadas = new Set();
+
+// =====================
+// RÉPLICA (ESTADO)
+// =====================
+let replicaActiva = false;
+let replicaStartTime = null;
+let replicaTimer = null;
+
+// =====================
+// AUTO REFRESH
+// =====================
+const AUTO_REFRESH_INTERVAL = 60000; // 1 minuto
 
 // =====================
 // INIT
 // =====================
 document.addEventListener("DOMContentLoaded", async () => {
     try {
-        await cargarConfig();           // 🔑 primero config
+        await cargarConfig();
         aplicarTemaGuardado();
-        calcularProximaEjecucion();
-        await cargarUltimoResultado();  // 🔑 luego data
+        await cargarUltimoResultado();
+        actualizarDashboard();
+        await sincronizarEstadoReplica();
     } catch (e) {
         console.error("❌ Error inicializando app:", e);
         mostrarError("No se pudo inicializar la aplicación");
@@ -33,6 +51,55 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     document.getElementById("statusFilter")
         ?.addEventListener("change", aplicarFiltros);
+
+    document.getElementById("replicaToggleBtn")
+        ?.addEventListener("click", onClickReplica);
+
+    document.getElementById("selectAllTable")
+        ?.addEventListener("change", toggleSeleccionarTodo);
+
+    document.getElementById("cancelReplica")
+        ?.addEventListener("click", cerrarModalReplica);
+
+    document.getElementById("confirmReplica")
+        ?.addEventListener("click", confirmarReplica);
+
+    // =====================
+    // 🔽 FILTRO SVG (EMBUDO)
+    // =====================
+    const filterToggle   = document.getElementById("filterToggle");
+    const filterDropdown = document.getElementById("filterDropdown");
+    const statusFilter   = document.getElementById("statusFilter");
+
+    if (filterToggle && filterDropdown && statusFilter) {
+
+        filterToggle.addEventListener("click", (e) => {
+            e.stopPropagation();
+            filterDropdown.classList.toggle("hidden");
+        });
+
+        filterDropdown.querySelectorAll("div").forEach(option => {
+            option.addEventListener("click", () => {
+                statusFilter.value = option.dataset.value;
+                aplicarFiltros();
+                filterDropdown.classList.add("hidden");
+            });
+        });
+
+        document.addEventListener("click", () => {
+            filterDropdown.classList.add("hidden");
+        });
+    }
+
+    // 🔄 AUTO-REFRESH
+    setInterval(async () => {
+        try {
+            await cargarUltimoResultado();
+            await sincronizarEstadoReplica();
+        } catch (e) {
+            console.warn("⚠️ Error en auto-refresh", e);
+        }
+    }, AUTO_REFRESH_INTERVAL);
 });
 
 // =====================
@@ -40,18 +107,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 // =====================
 async function cargarConfig() {
     const res = await fetch("/config");
-    if (!res.ok) {
-        throw new Error("No se pudo cargar configuración");
-    }
+    if (!res.ok) throw new Error("No se pudo cargar configuración");
 
     const config = await res.json();
-
-    if (!config.API_BASE_URL) {
-        throw new Error("API_BASE_URL no recibido");
-    }
-
     API_BASE_URL = config.API_BASE_URL;
-    console.log("🔧 API_BASE_URL:", API_BASE_URL);
 }
 
 // =====================
@@ -65,10 +124,15 @@ async function ejecutarConsultaManual() {
         if (!res.ok) throw new Error("Error HTTP");
 
         const result = await res.json();
-        dataOriginal = result.data || [];
 
-        actualizarInfoEjecucion(result.executedAt, "Manual");
+        dataOriginal = result.data || [];
+        lastExecutedAt = result.executedAt;
+        lastDataSignature = generarFirmaDatos(dataOriginal);
+
+        placasSeleccionadas.clear();
+        actualizarInfoEjecucion(result.executedAt);
         aplicarFiltros();
+        actualizarDashboard();
 
     } catch (e) {
         console.error("❌ Error manual:", e);
@@ -81,14 +145,24 @@ async function cargarUltimoResultado() {
     if (!res.ok) return;
 
     const result = await res.json();
-    dataOriginal = result.data || [];
+    const firmaNueva = generarFirmaDatos(result.data || []);
 
-    actualizarInfoEjecucion(
-        result.executedAt,
-        result.type === "automatic" ? "Automática" : "Manual"
-    );
+    if (firmaNueva !== lastDataSignature) {
+        dataOriginal = result.data || [];
+        lastDataSignature = firmaNueva;
+        placasSeleccionadas.clear();
+        aplicarFiltros();
+        actualizarDashboard();
+    }
 
-    aplicarFiltros();
+    actualizarInfoEjecucion(result.executedAt);
+}
+
+// =====================
+// FIRMA DE DATOS
+// =====================
+function generarFirmaDatos(data) {
+    return JSON.stringify(data.map(i => `${i.placa}|${i.estado}`));
 }
 
 // =====================
@@ -101,16 +175,9 @@ function aplicarFiltros() {
         ?.value.toUpperCase().trim();
 
     if (texto) {
-        const criterios = texto
-            .split(",")
-            .map(v => v.trim())
-            .filter(Boolean);
-
         data = data.filter(i =>
-            criterios.some(c =>
-                i.placa.includes(c) ||
-                i.razonSocial.includes(c)
-            )
+            i.placa.includes(texto) ||
+            i.razonSocial.includes(texto)
         );
     }
 
@@ -120,77 +187,236 @@ function aplicarFiltros() {
     }
 
     renderTabla(data);
+    renderCards(data);
 }
 
 // =====================
-// RENDER
+// RENDER TABLA
 // =====================
 function renderTabla(data) {
     const tbody = document.getElementById("platesTable");
-    const cards = document.getElementById("cardsContainer");
-
-    if (!tbody || !cards) return;
+    if (!tbody) return;
 
     tbody.innerHTML = "";
-    cards.innerHTML = "";
 
-    if (!data || data.length === 0) {
-        tbody.innerHTML = `
-            <tr>
-                <td colspan="3" class="empty">No hay resultados</td>
-            </tr>`;
-        cards.innerHTML = `<div class="empty">No hay resultados</div>`;
+    if (!data.length) {
+        tbody.innerHTML = `<tr><td colspan="4" class="empty">No hay resultados</td></tr>`;
         return;
     }
 
     data.forEach(item => {
-        const estadoClass =
-            item.estado === "ACTIVO" ? "estado activo" : "estado inactivo";
-
-        /* TABLA (DESKTOP) */
         const tr = document.createElement("tr");
         tr.innerHTML = `
+            <td><input type="checkbox" data-placa="${item.placa}"></td>
             <td>${item.razonSocial}</td>
             <td>${item.placa}</td>
-            <td><span class="${estadoClass}">${item.estado}</span></td>
+            <td><span class="estado ${item.estado === "ACTIVO" ? "activo" : "inactivo"}">${item.estado}</span></td>
         `;
-        tbody.appendChild(tr);
 
-        /* CARDS (MOBILE) */
+        const cb = tr.querySelector("input");
+        cb.checked = placasSeleccionadas.has(item.placa);
+        cb.addEventListener("change", () => actualizarSeleccion(item.placa, cb.checked));
+
+        tbody.appendChild(tr);
+    });
+
+    sincronizarSelectAll(data);
+}
+
+// =====================
+// RENDER CARDS
+// =====================
+function renderCards(data) {
+    const container = document.getElementById("cardsContainer");
+    if (!container) return;
+
+    container.innerHTML = "";
+
+    if (!data.length) {
+        container.innerHTML = `<div class="empty">No hay resultados</div>`;
+        return;
+    }
+
+    data.forEach(item => {
         const card = document.createElement("div");
         card.className = "card";
         card.innerHTML = `
-            <strong>Razón Social:</strong> ${item.razonSocial}<br>
-            <strong>Placa:</strong> ${item.placa}<br>
-            <strong>Estado:</strong>
-            <span class="${estadoClass}">${item.estado}</span>
+            <input type="checkbox" data-placa="${item.placa}">
+            <div class="card-content">
+                <div><span class="label">Razón Social:</span> ${item.razonSocial}</div>
+                <div>
+                    <span class="label">Placa:</span> ${item.placa} ·
+                    <span class="estado ${item.estado === "ACTIVO" ? "activo" : "inactivo"}">${item.estado}</span>
+                </div>
+            </div>
         `;
-        cards.appendChild(card);
+
+        const cb = card.querySelector("input");
+        cb.checked = placasSeleccionadas.has(item.placa);
+        cb.addEventListener("change", () => {
+            actualizarSeleccion(item.placa, cb.checked);
+            renderTabla(data);
+        });
+
+        container.appendChild(card);
     });
+}
+
+// =====================
+// SELECCIÓN
+// =====================
+function actualizarSeleccion(placa, checked) {
+    checked ? placasSeleccionadas.add(placa) : placasSeleccionadas.delete(placa);
+    sincronizarCheckboxes();
+}
+
+function sincronizarCheckboxes() {
+    document.querySelectorAll('input[data-placa]').forEach(cb => {
+        cb.checked = placasSeleccionadas.has(cb.dataset.placa);
+    });
+}
+
+function toggleSeleccionarTodo(e) {
+    document.querySelectorAll('input[data-placa]').forEach(cb => {
+        actualizarSeleccion(cb.dataset.placa, e.target.checked);
+    });
+}
+
+function sincronizarSelectAll(data) {
+    const all = document.getElementById("selectAllTable");
+    if (all) {
+        all.checked = data.every(d => placasSeleccionadas.has(d.placa));
+    }
+}
+
+// =====================
+// DASHBOARD
+// =====================
+function actualizarDashboard() {
+    document.getElementById("countTotal").innerText = dataOriginal.length;
+    document.getElementById("countActive").innerText =
+        dataOriginal.filter(i => i.estado === "ACTIVO").length;
+    document.getElementById("countInactive").innerText =
+        dataOriginal.filter(i => i.estado === "INACTIVO").length;
+}
+
+// =====================
+// RÉPLICA (TOGGLE)
+// =====================
+function onClickReplica() {
+    if (replicaActiva) {
+        desactivarReplica();
+        return;
+    }
+
+    if (!placasSeleccionadas.size) {
+        alert("Seleccione al menos una placa");
+        return;
+    }
+
+    abrirModalReplica();
+}
+
+function abrirModalReplica() {
+    const form = document.getElementById("replicaForm");
+    form.innerHTML = "";
+
+    placasSeleccionadas.forEach(p => {
+        form.innerHTML += `
+            <div class="replica-row">
+                <strong>${p}</strong>
+                <input placeholder="Latitud ejm:-12.28810">
+                <input placeholder="Longitud ejm:-76.84334">
+            </div>`;
+    });
+
+    document.getElementById("replicaModal").classList.remove("hidden");
+}
+
+function cerrarModalReplica() {
+    document.getElementById("replicaModal").classList.add("hidden");
+}
+
+async function confirmarReplica() {
+    const payload = [];
+
+    document.querySelectorAll(".replica-row").forEach(row => {
+        payload.push({
+            placa: row.querySelector("strong").innerText,
+            latitud: row.querySelectorAll("input")[0].value,
+            longitud: row.querySelectorAll("input")[1].value
+        });
+    });
+
+    await fetch("/replica/start", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ data: payload })
+    });
+
+    cerrarModalReplica();
+    await sincronizarEstadoReplica();
+}
+
+// =====================
+// ESTADO DE RÉPLICA (BACKEND)
+// =====================
+async function sincronizarEstadoReplica() {
+    const res = await fetch("/replica/status");
+    if (!res.ok) return;
+
+    const info = await res.json();
+
+    replicaActiva = info.activa;
+    replicaStartTime = info.startTime ? new Date(info.startTime).getTime() : null;
+
+    actualizarUIReplica();
+}
+
+async function desactivarReplica() {
+    await fetch("/replica/stop", { method: "POST" });
+    await sincronizarEstadoReplica();
+}
+
+function actualizarUIReplica() {
+    const status = document.getElementById("replicaStatus");
+    const btn = document.getElementById("replicaToggleBtn");
+
+    if (!replicaActiva) {
+        if (status) status.innerText = "🟥 Réplica desactivada";
+        if (btn) btn.innerText = "Activar réplica";
+        if (replicaTimer) clearInterval(replicaTimer);
+        return;
+    }
+
+    if (btn) btn.innerText = "Desactivar réplica";
+
+    if (replicaTimer) clearInterval(replicaTimer);
+
+    replicaTimer = setInterval(() => {
+        const diff = Math.floor((Date.now() - replicaStartTime) / 1000);
+        const m = Math.floor(diff / 60);
+        const s = diff % 60;
+        if (status) {
+            status.innerText = `🟢 Réplica activa · ${m ? m + " min " : ""}${s} s`;
+        }
+    }, 1000);
 }
 
 // =====================
 // UI HELPERS
 // =====================
 function mostrarCargando() {
-    document.getElementById("platesTable").innerHTML = `
-        <tr>
-            <td colspan="3" class="empty">
-                Consultando información...
-            </td>
-        </tr>`;
+    document.getElementById("platesTable").innerHTML =
+        `<tr><td colspan="4" class="empty">Consultando información...</td></tr>`;
 }
 
 function mostrarError(msg) {
-    document.getElementById("platesTable").innerHTML = `
-        <tr>
-            <td colspan="3" class="empty" style="color:red">
-                ${msg}
-            </td>
-        </tr>`;
+    document.getElementById("platesTable").innerHTML =
+        `<tr><td colspan="4" class="empty" style="color:red">${msg}</td></tr>`;
 }
 
-function actualizarInfoEjecucion(fecha, tipo) {
+function actualizarInfoEjecucion(fecha) {
     document.getElementById("lastExecution").innerText =
         fecha ? new Date(fecha).toLocaleString() : "--";
 }
@@ -199,39 +425,15 @@ function actualizarInfoEjecucion(fecha, tipo) {
 // TEMA OSCURO
 // =====================
 function toggleTheme() {
-    const dark = document.body.classList.toggle("dark");
-    localStorage.setItem("theme", dark ? "dark" : "light");
+    document.body.classList.toggle("dark");
+    localStorage.setItem(
+        "theme",
+        document.body.classList.contains("dark") ? "dark" : "light"
+    );
 }
 
 function aplicarTemaGuardado() {
     if (localStorage.getItem("theme") === "dark") {
         document.body.classList.add("dark");
     }
-}
-
-// =====================
-// PRÓXIMA EJECUCIÓN
-// =====================
-function calcularProximaEjecucion() {
-    const el = document.getElementById("nextExecution");
-    if (!el) return;
-
-    const horas = [0, 4, 8, 12, 16, 20];
-    const now = new Date();
-
-    let next = horas
-        .map(h => {
-            const d = new Date();
-            d.setHours(h, 0, 0, 0);
-            return d;
-        })
-        .find(d => d > now);
-
-    if (!next) {
-        next = new Date();
-        next.setDate(next.getDate() + 1);
-        next.setHours(0, 0, 0, 0);
-    }
-
-    el.innerText = next.toLocaleString();
 }

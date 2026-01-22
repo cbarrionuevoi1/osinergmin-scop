@@ -1,7 +1,6 @@
 // ============================
 // CARGA DE VARIABLES DE ENTORNO
 // ============================
-// .env está en la RAÍZ del proyecto
 require('dotenv').config({ path: '../.env' });
 
 // ============================
@@ -15,9 +14,15 @@ const fs = require('fs');
 const path = require('path');
 
 // ============================
+// SERVICIO DE RÉPLICA
+// ============================
+const replicaService = require('./replica');
+
+// ============================
 // APP
 // ============================
 const app = express();
+app.use(express.json());
 
 // ============================
 // CONFIG
@@ -53,7 +58,7 @@ const LAST_RESULT_FILE = path.join(__dirname, 'last-result.json');
 const PLACAS_FILE = path.join(__dirname, 'placas.json');
 
 // ============================
-// SERVIR FRONTEND (ESTÁTICO)
+// SERVIR FRONTEND
 // ============================
 app.use(express.static(path.join(__dirname, '../frontend')));
 
@@ -61,9 +66,7 @@ app.use(express.static(path.join(__dirname, '../frontend')));
 // CONFIG PARA FRONTEND
 // ============================
 app.get('/config', (req, res) => {
-    res.json({
-        API_BASE_URL
-    });
+    res.json({ API_BASE_URL });
 });
 
 // ============================
@@ -71,7 +74,7 @@ app.get('/config', (req, res) => {
 // ============================
 function cargarPlacasPermitidas() {
     if (!fs.existsSync(PLACAS_FILE)) {
-        console.warn('⚠️ placas.json no encontrado, se procesarán todas las placas');
+        console.warn('⚠️ placas.json no encontrado');
         return null;
     }
 
@@ -124,33 +127,26 @@ function procesarExcel(buffer) {
 // PROCESO PRINCIPAL
 // ============================
 async function ejecutarProceso(tipo = 'manual') {
-    console.log(`🚀 Iniciando proceso (${tipo})`);
-
+    console.log(`🚀 Proceso ${tipo}`);
     const excelBuffer = await descargarExcel();
     const data = procesarExcel(excelBuffer);
 
-    const payload = {
-        executedAt: new Date().toISOString(),
-        type: tipo,
-        total: data.length,
-        data
-    };
-
     fs.writeFileSync(
         LAST_RESULT_FILE,
-        JSON.stringify(payload, null, 2),
+        JSON.stringify({
+            executedAt: new Date().toISOString(),
+            type: tipo,
+            data
+        }, null, 2),
         'utf-8'
     );
 
-    console.log(`✅ Proceso ${tipo} finalizado | Registros: ${data.length}`);
     return data;
 }
 
 // ============================
-// ENDPOINTS
+// ENDPOINTS – CONSULTAS
 // ============================
-
-// Manual
 app.get('/run-manual', async (req, res) => {
     try {
         const data = await ejecutarProceso('manual');
@@ -160,12 +156,11 @@ app.get('/run-manual', async (req, res) => {
             data
         });
     } catch (err) {
-        console.error('❌ Error manual:', err.message);
+        console.error(err);
         res.status(500).json({ error: 'Error en ejecución manual' });
     }
 });
 
-// Último resultado persistido
 app.get('/last-result', (req, res) => {
     if (!fs.existsSync(LAST_RESULT_FILE)) {
         return res.json({ data: [] });
@@ -176,20 +171,55 @@ app.get('/last-result', (req, res) => {
 });
 
 // ============================
-// CRON AUTOMÁTICO
+// ENDPOINTS – RÉPLICA (FUNCIONAL)
+// ============================
+
+// Estado de réplica
+app.get('/replica/status', (req, res) => {
+    res.json(replicaService.getReplicaStatus());
+});
+
+// Activar réplica
+app.post('/replica/start', (req, res) => {
+    const { data } = req.body;
+
+    if (!Array.isArray(data) || !data.length) {
+        return res.status(400).json({
+            error: 'Se esperaba un array de placas'
+        });
+    }
+
+    console.log('▶️ Solicitud activar réplica:', data);
+
+    replicaService.startReplica(data);
+
+    res.json({
+        ok: true,
+        message: 'Réplica activada'
+    });
+});
+
+// Desactivar réplica
+app.post('/replica/stop', (req, res) => {
+    replicaService.stopReplica();
+
+    res.json({
+        ok: true,
+        message: 'Réplica desactivada'
+    });
+});
+
+// ============================
+// CRON AUTOMÁTICO (TABLA)
 // ============================
 const cronExpression = `*/${CRON_INTERVAL_MINUTES} * * * *`;
 
-console.log(`⏱️ CRON configurado cada ${CRON_INTERVAL_MINUTES} minutos`);
-console.log(`🧩 Expresión CRON: ${cronExpression}`);
-
 cron.schedule(cronExpression, async () => {
     try {
-        console.log('⏱️ [CRON] Ejecutando proceso automático');
+        console.log('⏱️ CRON tabla ejecutando');
         await ejecutarProceso('automatic');
-        console.log('✅ [CRON] Ejecución automática finalizada');
     } catch (err) {
-        console.error('❌ [CRON] Error:', err.message);
+        console.error('❌ CRON error:', err.message);
     }
 });
 
@@ -197,5 +227,5 @@ cron.schedule(cronExpression, async () => {
 // SERVER
 // ============================
 app.listen(PORT, () => {
-    console.log(`🚀 Backend + Frontend en ${API_BASE_URL}`);
+    console.log(`🚀 Backend activo en ${API_BASE_URL}`);
 });

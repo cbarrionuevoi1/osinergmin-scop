@@ -9,6 +9,7 @@
 body {
     margin: 0;
     background-color: #f4f6f8;
+    overflow-x: hidden;
 }
 
 /* =========================
@@ -56,46 +57,216 @@ body {
     background: #eef2f5;
     padding: 15px;
     border-radius: 8px;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
 }
 
 /* =========================
-   ACTIONS
+   TOP BAR (STATS + BOTONES)
    ========================= */
-.actions-bar {
+.top-bar {
     display: flex;
+    align-items: center;
     justify-content: space-between;
     gap: 15px;
+    margin-bottom: 15px;
     flex-wrap: wrap;
-    margin-bottom: 25px;
 }
 
-.filters {
+/* =========================
+   STATS
+   ========================= */
+.dashboard-stats {
     display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
 }
 
-.filters input,
-.filters select {
-    padding: 10px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-    min-width: 220px;
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 10px;
+    border-radius: 20px;
+    background: #ffffff;
+    font-size: 14px;
+    font-weight: bold;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    white-space: nowrap;
+}
+
+.stat-item.activo { color: #1e7e34; }
+.stat-item.inactivo { color: #c82333; }
+.stat-item.total { color: #333; }
+
+/* =========================
+   ACTION BUTTONS
+   ========================= */
+.actions-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 button {
     padding: 11px 22px;
-    background-color: #ff6b00;
     border: none;
-    color: white;
     border-radius: 6px;
     cursor: pointer;
+    font-weight: bold;
+    color: #ffffff;
+    background-color: #ff6b00;
 }
 
 button:hover {
     background-color: #e05f00;
 }
+
+/* =========================
+   REPLICA BUTTON
+   ========================= */
+.replica-btn {
+    background-color: #007bff;
+}
+
+.replica-btn:hover {
+    background-color: #0069d9;
+}
+
+/* =========================
+   FILTER DROPDOWN
+   ========================= */
+.actions-bar {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.filters {
+    position: relative; /* 🔑 ancla el dropdown */
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* input buscar */
+.filters input {
+    padding: 10px 12px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    min-width: 260px;
+    font-size: 14px;
+}
+
+/* =========================
+   FILTER BUTTON (EMBUDO)
+   ========================= */
+
+.filter-btn {
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    background: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.filter-btn img {
+    width: 20px;
+    height: 20px;
+}
+
+.filter-btn:hover {
+    background: #f0f0f0;
+}
+
+/* =========================
+   FILTER DROPDOWN
+   ========================= */
+
+.filter-dropdown {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 6px); /* debajo del input + botón */
+    background: #ffffff;
+    border: 1px solid #d0d0d0;
+    border-radius: 8px;
+    min-width: 150px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    z-index: 300;
+}
+
+.filter-dropdown div {
+    padding: 10px 14px;
+    cursor: pointer;
+    font-size: 14px;
+    white-space: nowrap;
+}
+
+.filter-dropdown div:hover {
+    background: #f5f7fa;
+}
+
+.filter-dropdown.hidden {
+    display: none;
+}
+
+.filters input {
+    padding: 0 12px;     /* sin padding vertical */
+    line-height: 40px;   /* centra el texto */
+}
+/* =========================
+   DARK MODE
+   ========================= */
+
+body.dark .filters input {
+    background-color: #2b2d31;
+    color: #e6e6e6;
+    border-color: #555;
+}
+
+body.dark .filter-btn {
+    background: #2b2d31;
+    border-color: #444;
+}
+
+body.dark .filter-dropdown {
+    background: #2b2d31;
+    border-color: #444;
+}
+
+body.dark .filter-dropdown div:hover {
+    background: #3a3c41;
+}
+
+/* =========================
+   MOBILE
+   ========================= */
+
+@media (max-width: 768px) {
+
+    .actions-bar {
+        flex-direction: column;
+    }
+
+    .filters {
+        width: 100%;
+    }
+
+    .filters input {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .filter-btn {
+        width: 44px;
+        height: 44px;
+    }
+}
+
+
 
 /* =========================
    RESULTS
@@ -114,13 +285,19 @@ table {
 
 thead {
     background: #343a40;
-    color: white;
+    color: #ffffff;
 }
 
 th, td {
     padding: 12px;
     border: 1px solid #ddd;
     text-align: left;
+}
+
+th:first-child,
+td:first-child {
+    width: 40px;
+    text-align: center;
 }
 
 tbody tr:hover {
@@ -131,6 +308,14 @@ tbody tr:hover {
     text-align: center;
     font-style: italic;
     color: #777;
+}
+
+/* =========================
+   CHECKBOX
+   ========================= */
+input[type="checkbox"] {
+    transform: scale(1.1);
+    cursor: pointer;
 }
 
 /* =========================
@@ -161,11 +346,110 @@ tbody tr:hover {
 }
 
 .card {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    width: 100%;
     background: #ffffff;
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 14px;
+    border: 1px solid #e1e5ea;
+    box-shadow: 0 6px 14px rgba(0,0,0,0.08);
+    overflow: hidden;
+}
+
+/* Checkbox */
+.card input[type="checkbox"] {
+    margin-top: 6px;
+    transform: scale(1.3);
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+/* Contenido del card */
+.card-content {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    width: 100%;
+    min-width: 0;
+    word-break: break-word;
+    font-size: 14px;
+    line-height: 1.35;
+}
+
+.card-title {
+    font-weight: 600;
+}
+
+/* Placa + Estado */
+.card-meta {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    font-size: 13px;
+    flex-wrap: wrap;
+}
+
+.label {
+    font-weight: 700; /* negrita */
+}
+
+/* =========================
+   CARD SELECCIONADA
+   ========================= */
+.card.selected {
+    border-left: 5px solid #0d6efd;
+    background: #f0f6ff;
+}
+
+/* =========================
+   MODAL
+   ========================= */
+.modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal.hidden {
+    display: none;
+}
+
+.modal-content {
+    background: #ffffff;
+    padding: 20px;
     border-radius: 10px;
-    padding: 14px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    width: 100%;
+    max-width: 480px;
+}
+
+.modal-content h3 {
+    margin-top: 0;
+}
+
+.replica-row {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
     margin-bottom: 12px;
+}
+
+.replica-row input {
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
 }
 
 /* =========================
@@ -197,43 +481,44 @@ body.dark thead {
 
 body.dark td {
     background-color: #2b2d31;
-    color: #e6e6e6;
     border-color: #444;
 }
 
-body.dark tbody tr:hover {
-    background-color: #3a3c41;
+body.dark .card {
+    background-color: #1f2126;
+    border-color: #2f333a;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.45);
 }
 
-body.dark .card {
+body.dark .card.selected {
+    background-color: #1e2a3a;
+    border-left-color: #4dabf7;
+}
+
+body.dark .modal-content {
     background-color: #2b2d31;
 }
 
 /* =========================
-   RESPONSIVE (MOBILE)
+   RESPONSIVE
    ========================= */
 @media (max-width: 768px) {
 
-    .container {
-        margin: 20px;
-        padding: 20px;
-    }
-
-    .title {
-        font-size: 24px;
-        line-height: 1.3;
-    }
-    
-    .theme-container {
-        margin-bottom: 8px;
-    }
-    
     table {
         display: none;
     }
 
     .cards {
         display: block;
+    }
+
+    .top-bar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .actions-right {
+        justify-content: space-between;
     }
 
     .actions-bar {

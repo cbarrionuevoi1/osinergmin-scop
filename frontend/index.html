@@ -23,35 +23,77 @@
     </div>
 
     <!-- TITULO -->
-    <h1 class="title">
-        Estado de unidades
-    </h1>
+    <h1 class="title">Estado de unidades</h1>
 
     <!-- INFO -->
     <div class="info-box">
-        <div>
-            <strong>Última búsqueda:</strong>
-            <span id="lastExecution">--</span>
-        </div>
+        <strong>Última búsqueda:</strong>
+        <span id="lastExecution">--</span>
+        <span id="replicaStatus" style="margin-left:15px;">
+            🟥 Réplica desactivada
+        </span>
     </div>
 
-    <!-- ACCIONES -->
+    <!-- FILA 1: STATS + BOTONES -->
+    <div class="top-bar">
+
+        <!-- STATS -->
+        <div class="dashboard-stats">
+            <div class="stat-item activo">
+                🟢 <span id="countActive">0</span>
+            </div>
+            <div class="stat-item inactivo">
+                🔴 <span id="countInactive">0</span>
+            </div>
+            <div class="stat-item total">
+                📦 <span id="countTotal">0</span>
+            </div>
+        </div>
+
+        <!-- BOTONES -->
+        <div class="actions-right">
+            <button id="replicaToggleBtn" class="replica-btn">
+                Activar réplica
+            </button>
+            <button id="runManualBtn">
+                Consultar
+            </button>
+        </div>
+
+    </div>
+
+    <!-- FILA 2: FILTROS -->
     <div class="actions-bar">
-        <div class="filters">
+
+        <div class="filters unified-filters">
+
             <input
                 type="text"
                 id="plateFilter"
-                placeholder="Buscar placa o razón social"
+                placeholder="Buscar"
             />
 
-            <select id="statusFilter">
+            <!-- SELECT OCULTO (fuente real del filtro) -->
+            <select id="statusFilter" style="display:none">
                 <option value="ALL">Todos</option>
                 <option value="ACTIVO">Activo</option>
                 <option value="INACTIVO">Inactivo</option>
             </select>
+
+            <!-- botón embudo -->
+            <button id="filterToggle" class="filter-btn" title="Filtrar">
+                <img src="icons/funnel.svg" alt="Filtro">
+            </button>
+
+            <!-- dropdown del filtro -->
+            <div id="filterDropdown" class="filter-dropdown hidden">
+                <div data-value="ALL">Todos</div>
+                <div data-value="ACTIVO">Activo</div>
+                <div data-value="INACTIVO">Inactivo</div>
+            </div>
+
         </div>
 
-        <button id="runManualBtn">Consultar</button>
     </div>
 
     <!-- RESULTADOS -->
@@ -61,6 +103,9 @@
         <table>
             <thead>
                 <tr>
+                    <th>
+                        <input type="checkbox" id="selectAllTable">
+                    </th>
                     <th>Razón Social</th>
                     <th>Placa</th>
                     <th>Estado</th>
@@ -68,7 +113,7 @@
             </thead>
             <tbody id="platesTable">
                 <tr>
-                    <td colspan="3" class="empty">
+                    <td colspan="4" class="empty">
                         Presione “Consultar”
                     </td>
                 </tr>
@@ -80,6 +125,22 @@
 
     </div>
 
+</div>
+
+<!-- MODAL RÉPLICA -->
+<div id="replicaModal" class="modal hidden">
+    <div class="modal-content">
+        <h3>Activar réplica</h3>
+
+        <div id="replicaForm">
+            <!-- filas dinámicas -->
+        </div>
+
+        <div class="modal-actions">
+            <button id="cancelReplica">Cancelar</button>
+            <button id="confirmReplica">Confirmar</button>
+        </div>
+    </div>
 </div>
 
 <!-- JS -->

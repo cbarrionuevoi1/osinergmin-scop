@@ -1,13 +1,7 @@
 {
-  "executedAt": "2026-01-13T19:35:12.061Z",
-  "type": "manual",
-  "total": 79,
+  "executedAt": "2026-01-22T18:00:11.325Z",
+  "type": "automatic",
   "data": [
-    {
-      "razonSocial": "CAXAMARCA GAS S.A.",
-      "placa": "M5O-734",
-      "estado": "ACTIVO"
-    },
     {
       "razonSocial": "CAXAMARCA GAS S.A.",
       "placa": "BCL-744",
@@ -30,18 +24,18 @@
     },
     {
       "razonSocial": "CESAR TRANSPORTES Y SERVICIOS GENERALES S.R.L.",
-      "placa": "ANQ-724",
-      "estado": "ACTIVO"
-    },
-    {
-      "razonSocial": "CESAR TRANSPORTES Y SERVICIOS GENERALES S.R.L.",
       "placa": "ANP-939",
       "estado": "ACTIVO"
     },
     {
       "razonSocial": "CESAR TRANSPORTES Y SERVICIOS GENERALES S.R.L.",
+      "placa": "ANQ-724",
+      "estado": "ACTIVO"
+    },
+    {
+      "razonSocial": "CESAR TRANSPORTES Y SERVICIOS GENERALES S.R.L.",
       "placa": "ATI-731",
-      "estado": "INACTIVO"
+      "estado": "ACTIVO"
     },
     {
       "razonSocial": "CESAR TRANSPORTES Y SERVICIOS GENERALES S.R.L.",
@@ -120,6 +114,11 @@
     },
     {
       "razonSocial": "DAYANNA INGENIEROS S.R.L.",
+      "placa": "TFV-975",
+      "estado": "INACTIVO"
+    },
+    {
+      "razonSocial": "DAYANNA INGENIEROS S.R.L.",
       "placa": "TFA-972",
       "estado": "ACTIVO"
     },
@@ -130,13 +129,8 @@
     },
     {
       "razonSocial": "DAYANNA INGENIEROS S.R.L.",
-      "placa": "TFV-975",
-      "estado": "ACTIVO"
-    },
-    {
-      "razonSocial": "DAYANNA INGENIEROS S.R.L.",
       "placa": "BNS-979",
-      "estado": "INACTIVO"
+      "estado": "ACTIVO"
     },
     {
       "razonSocial": "DAYANNA INGENIEROS S.R.L.",
@@ -171,7 +165,7 @@
     {
       "razonSocial": "MARK DA S.A.",
       "placa": "AHK-974",
-      "estado": "ACTIVO"
+      "estado": "INACTIVO"
     },
     {
       "razonSocial": "MARK DA S.A.",
@@ -181,7 +175,7 @@
     {
       "razonSocial": "MARK DA S.A.",
       "placa": "AZN-979",
-      "estado": "ACTIVO"
+      "estado": "INACTIVO"
     },
     {
       "razonSocial": "MARK DA S.A.",
@@ -190,12 +184,12 @@
     },
     {
       "razonSocial": "MARK DA S.A.",
-      "placa": "BHR-996",
+      "placa": "BHN-996",
       "estado": "ACTIVO"
     },
     {
       "razonSocial": "MARK DA S.A.",
-      "placa": "BHN-996",
+      "placa": "BHR-996",
       "estado": "ACTIVO"
     },
     {
@@ -276,7 +270,7 @@
     {
       "razonSocial": "TRANSPORTES ACUARIO S.A.C.",
       "placa": "TFJ-992",
-      "estado": "ACTIVO"
+      "estado": "INACTIVO"
     },
     {
       "razonSocial": "TRANSPORTES ACUARIO S.A.C.",
@@ -296,17 +290,7 @@
     {
       "razonSocial": "TRANSPORTES ACUARIO S.A.C.",
       "placa": "TFJ-988",
-      "estado": "ACTIVO"
-    },
-    {
-      "razonSocial": "TRANSPORTES ACUARIO S.A.C.",
-      "placa": "A4H-834",
       "estado": "INACTIVO"
-    },
-    {
-      "razonSocial": "TRANSPORTES ACUARIO S.A.C.",
-      "placa": "TGE-976",
-      "estado": "ACTIVO"
     },
     {
       "razonSocial": "TRANSPORTES ACUARIO S.A.C.",
@@ -321,11 +305,21 @@
     {
       "razonSocial": "TRANSPORTES ACUARIO S.A.C.",
       "placa": "TGE-977",
-      "estado": "ACTIVO"
+      "estado": "INACTIVO"
     },
     {
       "razonSocial": "TRANSPORTES ACUARIO S.A.C.",
       "placa": "TGE-984",
+      "estado": "ACTIVO"
+    },
+    {
+      "razonSocial": "TRANSPORTES ACUARIO S.A.C.",
+      "placa": "A4H-834",
+      "estado": "INACTIVO"
+    },
+    {
+      "razonSocial": "TRANSPORTES ACUARIO S.A.C.",
+      "placa": "TGE-976",
       "estado": "ACTIVO"
     },
     {
@@ -356,21 +350,21 @@
     {
       "razonSocial": "TRANSPORTES ACUARIO S.A.C.",
       "placa": "BJX-996",
-      "estado": "INACTIVO"
-    },
-    {
-      "razonSocial": "TRANSPORTES ACUARIO S.A.C.",
-      "placa": "TNF-985",
       "estado": "ACTIVO"
     },
     {
       "razonSocial": "TRANSPORTES ACUARIO S.A.C.",
-      "placa": "TJV-979",
+      "placa": "TNF-985",
       "estado": "INACTIVO"
     },
     {
       "razonSocial": "TRANSPORTES ACUARIO S.A.C.",
       "placa": "TNF-995",
+      "estado": "INACTIVO"
+    },
+    {
+      "razonSocial": "TRANSPORTES ACUARIO S.A.C.",
+      "placa": "TJV-979",
       "estado": "INACTIVO"
     },
     {
@@ -381,7 +375,7 @@
     {
       "razonSocial": "TRANSPORTES ACUARIO S.A.C..",
       "placa": "TFJ-986",
-      "estado": "ACTIVO"
+      "estado": "INACTIVO"
     },
     {
       "razonSocial": "TRANSPORTES TERRESTRES NACIONALES E.I.R.L.",
