@@ -339,6 +339,50 @@ input[type="checkbox"] {
 }
 
 /* =========================
+   RÉPLICA BADGES
+   ========================= */
+.replica-badge {
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: bold;
+    display: inline-block;
+}
+.replica-badge.activa {
+    background-color: #e6f4ea;
+    color: #1e7e34;
+}
+.replica-badge.inactiva {
+    background-color: #f1f3f5;
+    color: #6c757d;
+}
+.replica-badge.historico {
+    background-color: #cce5ff;
+    color: #004085;
+}
+
+/* =========================
+   SELECTION INFO BAR
+   ========================= */
+.selection-info-bar {
+    background: #e9ecef;
+    padding: 10px 15px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #495057;
+    margin-bottom: 15px;
+    text-align: center;
+}
+.selection-info-bar.hidden {
+    display: none;
+}
+body.dark .selection-info-bar {
+    background: #343a40;
+    color: #adb5bd;
+}
+
+/* =========================
    CARDS (MOBILE)
    ========================= */
 .cards {
@@ -450,7 +494,111 @@ input[type="checkbox"] {
     display: flex;
     justify-content: flex-end;
     gap: 10px;
+    margin-top: 15px;
 }
+
+/* =========================
+   MODAL RÉPLICA REDESIGN
+   ========================= */
+.modal-lg {
+    max-width: 600px;
+}
+.modal-subtitle {
+    margin-top: -10px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    color: #6c757d;
+}
+.modal-section {
+    margin-bottom: 20px;
+}
+.modal-section h4 {
+    margin: 0 0 10px 0;
+    font-size: 13px;
+    color: #495057;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+.mode-selector {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+.mode-card {
+    flex: 1;
+    border: 2px solid #dee2e6;
+    border-radius: 8px;
+    padding: 12px;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.2s;
+}
+.mode-card input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+}
+.mode-content {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+.mode-title {
+    font-weight: bold;
+    font-size: 14px;
+    color: #343a40;
+}
+.mode-desc {
+    font-size: 12px;
+    color: #6c757d;
+    line-height: 1.3;
+}
+.mode-card:hover {
+    border-color: #b8daff;
+}
+.mode-card:has(input:checked) {
+    border-color: #007bff;
+    background-color: #f0f8ff;
+}
+.historical-fields {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 10px;
+}
+.hist-field {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.hist-field label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #495057;
+}
+.hist-field input {
+    padding: 8px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+}
+.historical-calc {
+    font-size: 13px;
+    font-weight: 500;
+    color: #004085;
+    background: #cce5ff;
+    padding: 8px;
+    border-radius: 4px;
+    text-align: center;
+}
+
+body.dark .modal-subtitle { color: #adb5bd; }
+body.dark .modal-section h4 { color: #ced4da; }
+body.dark .mode-card { border-color: #495057; background: #2b2d31; }
+body.dark .mode-title { color: #e9ecef; }
+body.dark .mode-desc { color: #adb5bd; }
+body.dark .mode-card:hover { border-color: #6c757d; }
+body.dark .mode-card:has(input:checked) { border-color: #4dabf7; background: #1a2233; }
+body.dark .hist-field label { color: #ced4da; }
+body.dark .historical-calc { background: #1a2233; color: #4dabf7; }
 
 /* =========================
    DARK MODE

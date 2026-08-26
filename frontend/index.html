@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,137 +14,195 @@
         window.API_BASE_URL = "_API_BASE_URL_";
     </script>
 </head>
+
 <body>
 
-<div class="container">
+    <div class="container">
 
-    <!-- ICONO MODO OSCURO -->
-    <div class="theme-container">
-        <button id="themeToggle">🌙</button>
-    </div>
-
-    <!-- TITULO -->
-    <h1 class="title">Estado de unidades</h1>
-
-    <!-- INFO -->
-    <div class="info-box">
-        <strong>Última búsqueda:</strong>
-        <span id="lastExecution">--</span>
-        <span id="replicaStatus" style="margin-left:15px;">
-            🟥 Réplica desactivada
-        </span>
-    </div>
-
-    <!-- FILA 1: STATS + BOTONES -->
-    <div class="top-bar">
-
-        <!-- STATS -->
-        <div class="dashboard-stats">
-            <div class="stat-item activo">
-                🟢 <span id="countActive">0</span>
-            </div>
-            <div class="stat-item inactivo">
-                🔴 <span id="countInactive">0</span>
-            </div>
-            <div class="stat-item total">
-                📦 <span id="countTotal">0</span>
-            </div>
+        <!-- ICONO MODO OSCURO -->
+        <div class="theme-container">
+            <button id="themeToggle">🌙</button>
         </div>
 
-        <!-- BOTONES -->
-        <div class="actions-right">
-            <button id="replicaToggleBtn" class="replica-btn">
-                Activar réplica
-            </button>
-            <button id="runManualBtn">
-                Consultar
-            </button>
+        <!-- TITULO -->
+        <h1 class="title">Estado de unidades</h1>
+
+        <!-- INFO -->
+        <div class="info-box">
+            <strong>Última búsqueda:</strong>
+            <span id="lastExecution">--</span>
+
+            <span style="margin-left: 20px; display: inline-flex; gap: 15px;">
+                <span title="Réplicas Activas">🟢 <span id="countReplicaActiva">0</span> activas</span>
+                <span title="Históricos en proceso">🔵 <span id="countReplicaHistorico">0</span> en histórico</span>
+            </span>
         </div>
 
-    </div>
+        <!-- FILA 1: STATS + BOTONES -->
+        <div class="top-bar">
 
-    <!-- FILA 2: FILTROS -->
-    <div class="actions-bar">
+            <!-- STATS -->
+            <div class="dashboard-stats">
+                <div class="stat-item activo" title="Activos Osinergmin">
+                    🟢 <span id="countActive">0</span>
+                </div>
+                <div class="stat-item inactivo" title="Inactivos Osinergmin">
+                    🔴 <span id="countInactive">0</span>
+                </div>
+                <div class="stat-item total" title="Total Osinergmin">
+                    📦 <span id="countTotal">0</span>
+                </div>
+            </div>
 
-        <div class="filters unified-filters">
-
-            <input
-                type="text"
-                id="plateFilter"
-                placeholder="Buscar"
-            />
-
-            <!-- SELECT OCULTO (fuente real del filtro) -->
-            <select id="statusFilter" style="display:none">
-                <option value="ALL">Todos</option>
-                <option value="ACTIVO">Activo</option>
-                <option value="INACTIVO">Inactivo</option>
-            </select>
-
-            <!-- botón embudo -->
-            <button id="filterToggle" class="filter-btn" title="Filtrar">
-                <img src="icons/funnel.svg" alt="Filtro">
-            </button>
-
-            <!-- dropdown del filtro -->
-            <div id="filterDropdown" class="filter-dropdown hidden">
-                <div data-value="ALL">Todos</div>
-                <div data-value="ACTIVO">Activo</div>
-                <div data-value="INACTIVO">Inactivo</div>
+            <!-- BOTONES -->
+            <div class="actions-right">
+                <button id="replicaToggleBtn" class="replica-btn">
+                    Activar réplica
+                </button>
+                <button id="runManualBtn">
+                    Consultar
+                </button>
             </div>
 
         </div>
 
-    </div>
+        <!-- FILA 2: FILTROS -->
+        <div class="actions-bar">
 
-    <!-- RESULTADOS -->
-    <div class="results-panel">
+            <div class="filters unified-filters">
 
-        <!-- TABLA (DESKTOP) -->
-        <table>
-            <thead>
-                <tr>
-                    <th>
-                        <input type="checkbox" id="selectAllTable">
-                    </th>
-                    <th>Razón Social</th>
-                    <th>Placa</th>
-                    <th>Estado</th>
-                </tr>
-            </thead>
-            <tbody id="platesTable">
-                <tr>
-                    <td colspan="4" class="empty">
-                        Presione “Consultar”
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+                <input type="text" id="plateFilter" placeholder="Buscar" />
 
-        <!-- CARDS (MOBILE) -->
-        <div id="cardsContainer" class="cards"></div>
+                <!-- SELECT OCULTO (fuente real del filtro) -->
+                <select id="statusFilter" style="display:none">
+                    <option value="ALL">Todos</option>
+                    <option value="ACTIVO">Activo</option>
+                    <option value="INACTIVO">Inactivo</option>
+                </select>
 
-    </div>
+                <!-- botón embudo -->
+                <button id="filterToggle" class="filter-btn" title="Filtrar">
+                    <img src="icons/funnel.svg" alt="Filtro">
+                </button>
 
-</div>
+                <!-- dropdown del filtro -->
+                <div id="filterDropdown" class="filter-dropdown hidden">
+                    <div data-value="ALL">Todos</div>
+                    <div data-value="ACTIVO">Activo</div>
+                    <div data-value="INACTIVO">Inactivo</div>
+                </div>
 
-<!-- MODAL RÉPLICA -->
-<div id="replicaModal" class="modal hidden">
-    <div class="modal-content">
-        <h3>Activar réplica</h3>
+            </div>
 
-        <div id="replicaForm">
-            <!-- filas dinámicas -->
         </div>
 
-        <div class="modal-actions">
-            <button id="cancelReplica">Cancelar</button>
-            <button id="confirmReplica">Confirmar</button>
+        <!-- SELECTION INFO -->
+        <div id="selectionInfoBar" class="selection-info-bar hidden">
+            <span id="selectionText">0 unidades seleccionadas · 0 con réplica activa · 0 con histórico en proceso</span>
+        </div>
+
+        <!-- RESULTADOS -->
+        <div class="results-panel">
+
+            <!-- TABLA (DESKTOP) -->
+            <table>
+                <thead>
+                    <tr>
+                        <th>
+                            <input type="checkbox" id="selectAllTable">
+                        </th>
+                        <th>Razón Social</th>
+                        <th>Placa</th>
+                        <th>Estado</th>
+                        <th>Réplica</th>
+                    </tr>
+                </thead>
+                <tbody id="platesTable">
+                    <tr>
+                        <td colspan="5" class="empty">
+                            Presione “Consultar”
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- CARDS (MOBILE) -->
+            <div id="cardsContainer" class="cards"></div>
+
+        </div>
+
+    </div>
+
+    <!-- MODAL RÉPLICA -->
+    <div id="replicaModal" class="modal hidden">
+        <div class="modal-content modal-lg">
+            <h3>Activar réplica</h3>
+            <p class="modal-subtitle">Configura el tipo de envío para las unidades.</p>
+
+            <div class="modal-section">
+                <h4>MODO DE ENVÍO</h4>
+                <div class="mode-selector">
+                    <label class="mode-card">
+                        <input type="radio" name="replicaMode" value="CONTINUO" checked>
+                        <div class="mode-content">
+                            <div class="mode-title">Envío continuo</div>
+                            <div class="mode-desc">Envía cada minuto desde la activación.</div>
+                        </div>
+                    </label>
+                    <label class="mode-card">
+                        <input type="radio" name="replicaMode" value="HISTORICO_CONTINUO">
+                        <div class="mode-content">
+                            <div class="mode-title">Histórico + continuo</div>
+                            <div class="mode-desc">Completa histórico y luego continúa.</div>
+                        </div>
+                    </label>
+                    <label class="mode-card">
+                        <input type="radio" name="replicaMode" value="HISTORICO">
+                        <div class="mode-content">
+                            <div class="mode-title">Solo histórico</div>
+                            <div class="mode-desc">Envía el rango y finaliza.</div>
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+            <div class="modal-section">
+                <h4>COORDENADAS POR UNIDAD</h4>
+                <div id="replicaForm">
+                    <!-- filas dinámicas -->
+                </div>
+            </div>
+
+            <div id="historicalSection" class="modal-section hidden">
+                <h4>PERIODO HISTÓRICO</h4>
+                <div class="historical-fields">
+                    <div class="hist-field">
+                        <label>Fecha</label>
+                        <input type="date" id="histDate">
+                    </div>
+                    <div class="hist-field">
+                        <label>Desde</label>
+                        <input type="time" id="histFrom">
+                    </div>
+                    <div class="hist-field">
+                        <label>Hasta</label>
+                        <input type="time" id="histTo">
+                    </div>
+                </div>
+                <div id="historicalCalc" class="historical-calc">
+                    -- tramas históricas
+                </div>
+            </div>
+
+            <div class="modal-actions">
+                <button id="cancelReplica">Cancelar</button>
+                <button id="confirmReplica">Confirmar</button>
+            </div>
         </div>
     </div>
-</div>
 
-<!-- JS -->
-<script src="js/app.js"></script>
+    <!-- JS -->
+    <script src="js/app.js"></script>
 </body>
+
 </html>

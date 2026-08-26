@@ -1,7 +1,8 @@
 // ============================
 // CARGA DE VARIABLES DE ENTORNO
 // ============================
-require('dotenv').config({ path: '../.env' });
+const path = require('path');
+require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 
 // ============================
 // DEPENDENCIAS
@@ -11,7 +12,6 @@ const axios = require('axios');
 const XLSX = require('xlsx');
 const cron = require('node-cron');
 const fs = require('fs');
-const path = require('path');
 
 // ============================
 // SERVICIO DE RÉPLICA
@@ -106,7 +106,7 @@ function procesarExcel(buffer) {
         placa: String(row['PLACA'] || '').trim().toUpperCase(),
         estado: String(row['ESTADO'] || '').trim().toUpperCase()
     }))
-    .filter(r => r.placa && r.razonSocial);
+        .filter(r => r.placa && r.razonSocial);
 
     if (Array.isArray(placasPermitidas)) {
         resultado = resultado.filter(r =>
@@ -189,9 +189,9 @@ app.post('/replica/start', (req, res) => {
         });
     }
 
-    console.log('▶️ Solicitud activar réplica:', data);
+    console.log('▶️ Solicitud activar réplica:', req.body.mode || 'CONTINUO', data.map(d => d.placa));
 
-    replicaService.startReplica(data);
+    replicaService.startReplica(req.body);
 
     res.json({
         ok: true,
@@ -206,6 +206,20 @@ app.post('/replica/stop', (req, res) => {
     res.json({
         ok: true,
         message: 'Réplica desactivada'
+    });
+});
+
+// Desactivar réplica por placas
+app.post('/replica/stop-some', (req, res) => {
+    const { placas } = req.body;
+    let stoppedCount = 0;
+    if (Array.isArray(placas)) {
+        stoppedCount = replicaService.stopReplicaPlacas(placas);
+    }
+
+    res.json({
+        ok: true,
+        message: `Réplica desactivada para ${stoppedCount} placas`
     });
 });
 
